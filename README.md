@@ -181,13 +181,13 @@ april[april_outl, ]
 
 
 ############################################################
-#Analysis of Weather
+## Analysis of Weather
 ############################################################
 
 #analyzing weather data
 summary(tourism[4:16])
 
-#development of weather for the whole available period of time
+## development of weather for the whole available period of time
 #temperature
 ggplot(data = weather_all, aes(x = date_beg)) + 
   geom_smooth(aes(y = MO_TT, color = "MO_TT"), method = "auto", se = FALSE) +
@@ -453,10 +453,10 @@ tourism$mean_norm_temp = temp$mean_norm_temp
 
 
 ############################################################
-#Analysis of Tourism
+## Analysis of Tourism
 ############################################################
 
-# set the working directory
+#set the working directory
 wd = "C:/Users/timpe_000/Desktop/SPL Projekt"
 setwd(wd)
 
@@ -700,7 +700,7 @@ tourism$rel_night_deviation = NULL
 
 
 ############################################################
-#Build Regression Models
+## Build Regression Models
 ############################################################
 
 #find interesting weather variables with relevance for tourism activities
@@ -785,7 +785,7 @@ lm_night_dev = lm(rel_night_dev_basis ~ .-guest_basis-night_basis-rel_guest_dev_
 summary(lm_night_dev)
 
 
-## export of selected regression tables
+#export of selected regression tables
 #sink("output.txt")
 #summary(lm_guest_dev)
 #sink()
