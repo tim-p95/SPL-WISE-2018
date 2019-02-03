@@ -1,11 +1,11 @@
-Name of Quantlet:  SPL_WeatherTourism_preparation
+Name of Quantlet: SPL_WeatherTourism_preparation
 
-Published in:   'Statistical programming languages - Student Project on "Impact of Meteorological Factors on Regional Tourism" '
+Published in:     'Statistical programming languages - Student Project on "Impact of Meteorological Factors on Regional Tourism" '
 
-Description:    'Loading Packages, Import and Preparation of Data, Description of Weather Variables'
+Description:      'Loading Packages, Import and first preparation of data, Description of Weather Variables'
 
-Keywords:       packages, import, csv, date
+Keywords:         packages, import, csv, date format, matching data
 
-Author:         Tim Peschenz
+Author:           Tim Peschenz
 
-Submitted:      So, Mar 17 2019
+Submitted:        So, Mar 17 2019
