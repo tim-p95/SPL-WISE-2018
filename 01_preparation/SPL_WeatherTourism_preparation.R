@@ -1,5 +1,5 @@
 ## set the working directory
-wd = "C:/Users/timpe_000/Desktop/SPL Projekt"
+wd = "C:/Users/timpe_000/Desktop/sPL-WISE-2018/01_preparation"
 setwd(wd)
 
 
