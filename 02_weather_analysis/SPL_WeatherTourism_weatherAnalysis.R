@@ -18,8 +18,8 @@ na_count = sapply(tourism, function(x){sum(is.na(x))})
 na_count[which(na_count != 0)]
 
 #calculate monthwise means for all potentially relevant tourism and weather variables
-numeric_cols = unlist(lapply(tourism, is.numeric)) 
-tourism_num = data.frame("month" = seq(1:12), tourism[ , numeric_cols])
+numeric_cols             = unlist(lapply(tourism, is.numeric)) 
+tourism_num              = data.frame("month" = seq(1:12), tourism[ , numeric_cols])
 tourism_num[c(2, 3, 13)] = NULL
 
 mon = tourism_num %>%
@@ -35,7 +35,7 @@ colnames(month_means) = paste("mean_", colnames(tourism_num), sep = "")
 month_means = data.frame("month_name" = month.name, month_means)
 
 #exchanging the missing values with the mean of the particular month from month_means data frame
-tourism$MO_N[is.na(tourism$MO_N)] = 
+tourism$MO_N[is.na(tourism$MO_N)]   = 
   month_means$mean_MO_N[as.numeric(format(tourism$date_beg, format="%m"))[is.na(tourism$MO_N)]]
 tourism$MO_FK[is.na(tourism$MO_FK)] = 
   month_means$mean_MO_FK[as.numeric(format(tourism$date_beg, format="%m"))[is.na(tourism$MO_FK)]]
@@ -62,12 +62,12 @@ ggplot(data = weather_all, aes(x = date_beg)) +
   scale_color_manual(labels = c("Minimum Temperature", "Average Temperature", "Maximum Temperature"), values = c("blue", "green", "red")) +
   expand_limits(y = 0) +
   theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        legend.justification=c(1,0), 
-        legend.position=c(1,0))
+  theme(panel.border         = element_blank(), 
+        panel.grid.major     = element_blank(),
+        panel.grid.minor     = element_blank(), 
+        axis.line            = element_line(colour = "black"),
+        legend.justification = c(1,0), 
+        legend.position      = c(1,0))
 
 
 
@@ -109,24 +109,24 @@ sum(weather_daily$hot)
 
 ## aggregate weather categories according to month-year combination
 weather_days = weather_daily[, c(12:17)]
-days = data.frame(weather_days %>% group_by(date_id) %>% summarize_all(sum))
+days         = data.frame(weather_days %>% group_by(date_id) %>% summarize_all(sum))
 
 #arrange observations in correct time order
 days$month = substr(days$date_id, 1, 2)
-days$year = substr(days$date_id, 4, 7)
+days$year  = substr(days$date_id, 4, 7)
 
 days = days %>% arrange(year, month)
 
 #adding day counts of weather categories to respective observation in tourism data frame
-tourism$rainy = days$rainy
-tourism$sunny = days$sunny
+tourism$rainy  = days$rainy
+tourism$sunny  = days$sunny
 tourism$cloudy = days$cloudy
-tourism$windy = days$windy
-tourism$hot = days$hot
+tourism$windy  = days$windy
+tourism$hot    = days$hot
 
 
 ## create dataframe with monthly weather deviations ------------------------------
-weather_num = data.frame(tourism[, c(3:11, 13, 14)])
+weather_num   = data.frame(tourism[, c(3:11, 13, 14)])
 weather_means = data.frame(month_means[3:13])
 
 #compare observations
@@ -135,6 +135,7 @@ data.frame(colnames(weather_num), colnames(weather_means))
 #repeat means for whole observation period
 weather_means = do.call("rbind", replicate(8, weather_means, simplify = FALSE))
 
+#calculate deviations
 weather_deviation = weather_num - weather_means
 
 

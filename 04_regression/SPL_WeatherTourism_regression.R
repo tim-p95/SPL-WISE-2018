@@ -13,10 +13,10 @@
 ## extract the relevant data for the analysis
 lr_data = data.frame("rel_guest_dev_basis" = tourism$rel_guest_dev_basis,
                      "rel_night_dev_basis" = tourism$rel_night_dev_basis,
-                     "avg_time" = tourism$avg_time,
-                     "MO_TT" = tourism$MO_TT,
-                     "MO_SD_S" = tourism$MO_SD_S,
-                     "MO_RR" = tourism$MO_RR)
+                     "avg_time"            = tourism$avg_time,
+                     "MO_TT"               = tourism$MO_TT,
+                     "MO_SD_S"             = tourism$MO_SD_S,
+                     "MO_RR"              = tourism$MO_RR)
 
 
 ## Stage 1: run linear regression with absolute values for weather variables ------------------------------
@@ -64,9 +64,9 @@ bptest(lm_night_dev)
 
 ## Stage 2: run linear regression with deviations of weather variables ------------------------------
 #adjust data for linear regression
-lr_data[, 4:6] = NULL
+lr_data[, 4:6]   = NULL
 lr_data$temp_dev = weather_deviation$MO_TT
-lr_data$sun_dev = weather_deviation$MO_SD_S
+lr_data$sun_dev  = weather_deviation$MO_SD_S
 lr_data$rain_dev = weather_deviation$MO_RR
 
 
@@ -117,11 +117,11 @@ bptest(lm_night_dev)
 
 ## Stage 3: regression with adding day counts of weather categories
 #adjust data for regression
-lr_data$rainy = days$rainy
-lr_data$sunny = days$sunny
+lr_data$rainy  = days$rainy
+lr_data$sunny  = days$sunny
 lr_data$cloudy = days$cloudy
-lr_data$windy = days$windy
-lr_data$hot = days$hot
+lr_data$windy  = days$windy
+lr_data$hot    = days$hot
 
 #1 average nights per guest
 lm_avg_nights = lm(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)

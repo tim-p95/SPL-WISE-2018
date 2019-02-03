@@ -39,12 +39,10 @@ weather_all$date_beg = as.Date(sapply(weather_all$MESS_DATUM_BEGINN, toString), 
 weather_all$date_end = as.Date(sapply(weather_all$MESS_DATUM_ENDE, toString), format = "%Y%m%d")
 
 weather_all$MESS_DATUM_BEGINN = NULL
-weather_all$MESS_DATUM_ENDE = NULL
+weather_all$MESS_DATUM_ENDE   = NULL
 
 # get relevant time period of the weather data to match tourism observations
-weather = subset(weather_all, 
-                 as.numeric(format(date_beg, format="%Y")) >= 2010)
-
+weather           = subset(weather_all, as.numeric(format(date_beg, format="%Y")) >= 2010)
 rownames(weather) = seq(1:nrow(weather))
 
 

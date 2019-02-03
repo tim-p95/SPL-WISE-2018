@@ -18,12 +18,12 @@ ggplot(tourism, aes(y = guest_count, x = month_name, fill=month_name)) +
   xlab("Month") + 
   ylab("Guests") +
   theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        legend.justification=c(1,1), 
-        legend.position=c(1,1))
+  theme(panel.border         = element_blank(), 
+        panel.grid.major     = element_blank(),
+        panel.grid.minor     = element_blank(), 
+        axis.line            = element_line(colour = "black"),
+        legend.justification = c(1,1), 
+        legend.position      = c(1,1))
 
 ggplot(tourism, aes(y = night_count, x = month_name, fill=month_name)) +
   geom_boxplot(outlier.colour = "red", outlier.shape = 1) + 
@@ -32,16 +32,16 @@ ggplot(tourism, aes(y = night_count, x = month_name, fill=month_name)) +
   xlab("Month") + 
   ylab("Overnight Stays") +
   theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        legend.justification=c(1,1), 
-        legend.position=c(1,1))
+  theme(panel.border         = element_blank(), 
+        panel.grid.major     = element_blank(),
+        panel.grid.minor     = element_blank(), 
+        axis.line            = element_line(colour = "black"),
+        legend.justification = c(1,1), 
+        legend.position      = c(1,1))
 
 
 ## extracting the outlier in April
-april = subset(tourism, month_name == "April")
+april      = subset(tourism, month_name == "April")
 april_outl = which(april$guest_count > mean(april$guest_count) + 2*sd(april$guest_count))
 april[april_outl, ]
 
@@ -58,10 +58,10 @@ ggplot(tourism, aes(x = guest_count)) +
   xlab("Guests") + 
   ylab("Density Function and Histogramm") +
   theme_bw() +
-  theme(panel.border = element_blank(), 
+  theme(panel.border     = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))
+        axis.line        = element_line(colour = "black"))
 
 
 ## visualize development of guests ------------------------------
@@ -74,12 +74,12 @@ ggplot(data = tourism, aes(x = date_beg, y = guest_count)) +
   ylab("Number of Guests") +
   expand_limits(y = 0) +
   theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        legend.justification=c(1,0), 
-        legend.position=c(1,0))
+  theme(panel.border        = element_blank(), 
+        panel.grid.major     = element_blank(),
+        panel.grid.minor     = element_blank(), 
+        axis.line            = element_line(colour = "black"),
+        legend.justification = c(1,0), 
+        legend.position      = c(1,0))
 
 
 ## adding average number of days spent in region (overnight stays / guests) ------------------------------
@@ -88,11 +88,11 @@ tourism$avg_time = tourism$night_count/tourism$guest_count
 
 ## creating overall monthly averages for tourism data ------------------------------
 tourism_tab = data.table(tourism)
-monthly = data.frame(tourism_tab[,list(mean_guest = mean(guest_count),
-                                       sd_guest = sd(guest_count), 
-                                       mean_nights = mean(night_count),
-                                       sd_nights = sd(night_count)),
-                                 by=tourism$month_name])
+monthly     = data.frame(tourism_tab[,list(mean_guest  = mean(guest_count),
+                                           sd_guest    = sd(guest_count), 
+                                           mean_nights = mean(night_count),
+                                           sd_nights   = sd(night_count)),
+                                      by = tourism$month_name])
 
 colnames(monthly)[1] = "Month"
 
@@ -104,10 +104,10 @@ ggplot(data = monthly, aes(x = Month, y = mean_guest)) +
   xlab("Month") + 
   ylab("Guests") +
   theme_bw() +
-  theme(panel.border = element_blank(), 
+  theme(panel.border     = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))
+        axis.line        = element_line(colour = "black"))
 
 
 #define season month (guests > 50000)
@@ -139,10 +139,10 @@ ggplot(data = tourism, aes(x = date_beg, y = avg_time)) +
   xlab("Time") + 
   ylab("Average number of nights") +
   theme_bw() +
-  theme(panel.border = element_blank(), 
+  theme(panel.border     = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))
+        axis.line        = element_line(colour = "black"))
 
 
 ## relationship between season and average nights per guest ------------------------------
@@ -162,7 +162,7 @@ tourism$rel_night_deviation = tourism$abs_night_deviation/tourism$night_count
 
 
 ## calculate annual growth of guests and nights compared to basis year = 2010 ------------------------------
-obs = data.frame("year" = format(tourism$date_beg, format = "%Y"))
+obs             = data.frame("year" = format(tourism$date_beg, format = "%Y"))
 obs$guest_count = tourism$guest_count
 obs$night_count = tourism$night_count
 
@@ -184,13 +184,13 @@ ggplot(years_index, aes(x = c(2010:2017))) +
   geom_point(aes(y = guest_growth, color = "blue")) +
   geom_point(aes(y = night_growth, color = "red")) +
   theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        legend.justification=c(1,0), 
-        legend.position=c(1,0),
-        legend.title=element_blank())
+  theme(panel.border         = element_blank(), 
+        panel.grid.major     = element_blank(),
+        panel.grid.minor     = element_blank(), 
+        axis.line            = element_line(colour = "black"),
+        legend.justification = c(1,0), 
+        legend.position      = c(1,0),
+        legend.title         = element_blank())
 
 
 ## recalculate guests and nights "without" growth (in values of basis year 2010) ------------------------------
@@ -226,22 +226,22 @@ ggplot(data = tourism, aes(x = date_beg, y = guest_basis)) +
   ylab("Number of guests") +
   expand_limits(y = 0) +
   theme_bw() +
-  theme(panel.border = element_blank(), 
+  theme(panel.border     = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))
+        axis.line        = element_line(colour = "black"))
 
 
 ## calculate monthly means of newly generated basis variables ------------------------------
-basis = data.frame("month" = rep(seq(1:12), 8))
+basis             = data.frame("month" = rep(seq(1:12), 8))
 basis$guest_basis = tourism$guest_basis
 basis$night_basis = tourism$night_basis
 
-basis = data.table(basis)
-mon_basis = data.frame(basis[,list(mean_guest_basis = mean(guest_basis),
-                                   sd_guest_basis = sd(guest_basis), 
+basis     = data.table(basis)
+mon_basis = data.frame(basis[,list(mean_guest_basis  = mean(guest_basis),
+                                   sd_guest_basis    = sd(guest_basis), 
                                    mean_nights_basis = mean(night_basis),
-                                   sd_nights_basis = sd(night_basis)),
+                                   sd_nights_basis   = sd(night_basis)),
                              by=basis$month])
 
 
