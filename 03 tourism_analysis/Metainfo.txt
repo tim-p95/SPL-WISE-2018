@@ -1,4 +1,4 @@
-Name of Quantlet:  SPL_WeatherTourism_tourism_analysis
+Name of Quantlet:  SPL_WeatherTourism_tourismAnalysis
 
 Published in:      'Statistical programming languages - Student Project on "Impact of Meteorological Factors on Regional Tourism" '
 
