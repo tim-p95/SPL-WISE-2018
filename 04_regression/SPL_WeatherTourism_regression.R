@@ -1,3 +1,11 @@
+# Name of Quantlet:  SPL_WeatherTourism_regression
+# Published in:      'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
+# Description:       'Several Multiple Regression Models to measure the impact of weather factors on tourism'
+# Keywords:          regression model, multiple regression, autocorrelation, multicollinearity, heteroskedasticity
+# Author:            Tim Peschenz
+# Submitted:         So, Mar 17 2019
+
+
 ############################################################
 ## Build Regression Models
 ############################################################

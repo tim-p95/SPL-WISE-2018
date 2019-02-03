@@ -1,3 +1,11 @@
+# Name of Quantlet:  SPL_WeatherTourism_tourismAnalysis
+# Published in:      'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
+# Description:       'Analysis and Transformation of the monthly observations of guests and nights, Creation of target variables for regression analysis, Visualization of Tourism Developments'
+# Keywords:          tourism analysis, transformation, visualization, indexing, relative deviations
+# Author:            Tim Peschenz
+# Submitted:         So, Mar 17 2019
+
+
 ############################################################
 ## Analysis of Tourism
 ############################################################

@@ -1,3 +1,11 @@
+# Name of Quantlet: SPL_WeatherTourism_weatherAnalysis
+# Published in:     'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
+# Description:      'Analysis and Transformation of the daily and monthly weather observations, Categorization of Days, Visualization of Weather Developments'
+# Keywords:         meteorological analysis, categorization, transformation, visualization, missing data
+# Author:           Tim Peschenz
+# Submitted:        So, Mar 17 2019
+
+
 ############################################################
 ## Analysis of Weather
 ############################################################
