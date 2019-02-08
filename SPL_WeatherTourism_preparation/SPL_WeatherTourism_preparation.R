@@ -7,7 +7,7 @@
 
 
 ## set the working directory
-wd = "C:/Users/timpe_000/Desktop/sPL-WISE-2018/01_preparation"
+wd = "C:/Users/timpe_000/Desktop/sPL-WISE-2018/SPL_WeatherTourism_preparation"
 setwd(wd)
 
 
@@ -23,8 +23,6 @@ library(stargazer)
 library(lmtest)
 library(caret)
 
-#citation("caret")
-
 
 ############################################################
 ## Data Import
@@ -34,16 +32,22 @@ library(caret)
 # read monthly weather data and transform into data frame
 weather_all = data.frame(read.csv("weather_data.csv", header = TRUE, sep = ";", na.strings = "-999"))
 
+#missing values are representated by the value "-999" (replaced with NA)
+
 # add dates in date format to replace orignal date structure
 weather_all$date_beg = as.Date(sapply(weather_all$MESS_DATUM_BEGINN, toString), format = "%Y%m%d")
 weather_all$date_end = as.Date(sapply(weather_all$MESS_DATUM_ENDE, toString), format = "%Y%m%d")
 
+#replace former date variables
 weather_all$MESS_DATUM_BEGINN = NULL
 weather_all$MESS_DATUM_ENDE   = NULL
 
 # get relevant time period of the weather data to match tourism observations
 weather           = subset(weather_all, as.numeric(format(date_beg, format="%Y")) >= 2010)
 rownames(weather) = seq(1:nrow(weather))
+
+#observations for tourism start in January 2010 until December 2017 (96 observations)
+#weather data has to adapt to this time frame
 
 
 ## import daily weather data ------------------------------
@@ -53,22 +57,29 @@ weather_all_daily = data.frame(read.csv("weather_data_daily.csv", header = TRUE,
 #converting date into R Date format and replace former format
 weather_all_daily$date = as.Date(sapply(weather_all_daily$MESS_DATUM, toString), format = "%Y%m%d")
 
+#replace former date variable
 weather_all_daily$MESS_DATUM = NULL
 
 #extract relevant period of time
 weather_daily = subset(weather_all_daily, as.numeric(format(date, format="%Y")) >= 2010)
 
-#deleting not relevant columns
+#deleting columns that are not relevant for the analysis, i.e. certaitn weather measures
 weather_daily[, c(1, 2, 5, 9, 11, 12, 14, 18)] = NULL
+
+#deleted columns: stations id (STATIONS_ID), quality levels (QN_3, QN_4), snow height (SHK_TAG), air
+#pressure (VPM, PM), humidity (UPM), end of record (eor)
 
 #adding month-year combination for matching daily weather data with monthly tourism_data
 weather_daily$date_id = as.character(format(weather_daily$date, format = "%m-%Y"))
-
+#example: January 2010 = "01-2010"
 
 ## description for weather variables
 weather_description = data.frame("variable" = c(as.character(colnames(weather)), 
                                                 "--- DAILY OBSERVATIONS ---", 
                                                 as.character(colnames(weather_daily))))
+
+#because of the numerous different weather variables, a description of the oroginal column names from the 
+#weather station data is created, to have an useful orientation point during the whole analysis  
 
 weather_description$description = c("Identification number of the weather measuring station", 
                                     "Quality level of the following columns", 
@@ -104,3 +115,27 @@ weather_description$description = c("Identification number of the weather measur
                                     "Date of measurement in R Date format (format = '%Y%m%d')",
                                     "Combination of month and year (format = '%Y-%m')"
 )
+
+
+## import tourism data ------------------------------
+#monthly number of guests
+guests = data.frame(read.csv("guests.csv", header = TRUE, sep = ";"))
+
+#monthly number of overnight stays
+overnight = data.frame(read.csv("overnight.csv", header = TRUE, sep = ";"))
+
+#change column names
+colnames(guests) = c("trav_area", "year", "month", "data_basis", "num_guests", "comments")
+colnames(overnight) = c("trav_area", "year", "month", "data_basis", "num_nights", "comments")
+
+#extract relevant columns from tourism data
+guest_count = guests$num_guests
+night_count = overnight$num_nights
+
+
+## combining weather data and tourism data in a data frame called tourism
+tourism = data.frame(weather, guest_count, night_count)
+
+
+## including names for month (January - December)
+tourism$month_name = factor(rep(c(month.name), 8), levels = c(month.name), ordered = TRUE)
