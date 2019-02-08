@@ -11,27 +11,29 @@
 ############################################################
 
 ## Handle Missing Data for monthly weather data ------------------------------
-#count columnwise NAs:
+#count columnwise NAs
 na_count = sapply(tourism, function(x){sum(is.na(x))})
 
-#extracting relevant columns:
+#extracting relevant columns
 na_count[which(na_count != 0)]
 
-#calculate monthwise means for all potentially relevant tourism and weather variables
+## calculate monthwise means for all potentially relevant tourism and weather variables
+#extract numeric columns
 numeric_cols             = unlist(lapply(tourism, is.numeric)) 
 tourism_num              = data.frame("month" = seq(1:12), tourism[ , numeric_cols])
 tourism_num[c(2, 3, 13)] = NULL
 
+#monthwise aggregation by calculating the mean
 mon = tourism_num %>%
   group_by(month) %>%
   summarise_all(funs(mean), na.rm = TRUE)
 
 month_means = data.frame(mon)
 
-#change column names of monthwise observations 
+#change column names of monthwise observations by adding _mean label to the name
 colnames(month_means) = paste("mean_", colnames(tourism_num), sep = "")
 
-#addig month names
+#addig month names (January - December)
 month_means = data.frame("month_name" = month.name, month_means)
 
 #exchanging the missing values with the mean of the particular month from month_means data frame
@@ -46,14 +48,20 @@ tourism$MO_RR[is.na(tourism$MO_RR)] =
 ## check for missing data in daily weather data ------------------------------
 na_count = sapply(weather_daily, function(x){sum(is.na(x))})
 
-#replace other missing variables with mean value
+#extracting relevant columns
+na_count[which(na_count != 0)]
+
+#replace missing values with mean value 
 weather_daily$FX[is.na(weather_daily$FX)] = mean(weather_daily$FX, na.rm = TRUE)
 weather_daily$FM[is.na(weather_daily$FM)] = mean(weather_daily$FM, na.rm = TRUE)
 weather_daily$NM[is.na(weather_daily$NM)] = mean(weather_daily$NM, na.rm = TRUE)
 
+#since there are no highly season specific variables like temperature, replacing the missing values 
+#with the overall mean is appropriate in this case
+
 
 ## long time development of weather for the whole available period of time ------------------------------
-#temperature
+#temperature development (1887 - 2017)
 ggplot(data = weather_all, aes(x = date_beg)) + 
   geom_smooth(aes(y = MO_TT, color = "MO_TT"), method = "auto", se = FALSE) +
   geom_smooth(aes(y = MO_TX, color = "MO_TX"), method = "auto", se = FALSE) +
@@ -72,11 +80,14 @@ ggplot(data = weather_all, aes(x = date_beg)) +
 
 
 ## categorize days as rainy, sunny, cloudy, windy, hot ------------------------------
-#rainy days (rainfall amount above 3mm a day)
+#rainy days (rainfall amount above 1mm a day)
 weather_daily$rainy = sapply(weather_daily$RSK, FUN = function(x) ifelse(x > 1, 1, 0))
 
 #count total number of rainy days in time period
 sum(weather_daily$rainy)
+
+#percentage of rainy days
+sum(weather_daily$rainy)/(nrow(weather_daily))
 
 
 #sunny days (sunshine hours above 10 hours a day)
@@ -85,12 +96,18 @@ weather_daily$sunny = sapply(weather_daily$SDK, FUN = function(x) ifelse(x > 10,
 #count total number of sunny days in time period
 sum(weather_daily$sunny)
 
+#percentage of sunny days 
+sum(weather_daily$sunny)/(nrow(weather_daily))
+
 
 #cloudy days (cloud coverage above 7.75 on okta scale)
 weather_daily$cloudy = sapply(weather_daily$NM, FUN = function(x) ifelse(x > 7.75, 1, 0))
 
 #count total number of cloudy days in time period
 sum(weather_daily$cloudy)
+
+#percentage of cloudy days
+sum(weather_daily$cloudy)/(nrow(weather_daily))
 
 
 #windy days (wind speed above 6 m/s)
@@ -99,6 +116,9 @@ weather_daily$windy = sapply(weather_daily$FX, FUN = function(x) ifelse(x > 6, 1
 #count total number of windy days in time period
 sum(weather_daily$windy)
 
+#percentage of windy days
+sum(weather_daily$windy)/(nrow(weather_daily))
+
 
 #hot days (maximum temperature above 27 °C)
 weather_daily$hot = sapply(weather_daily$TXK, FUN = function(x) ifelse(x > 27, 1, 0))
@@ -106,8 +126,15 @@ weather_daily$hot = sapply(weather_daily$TXK, FUN = function(x) ifelse(x > 27, 1
 #count total number of hot days in time period
 sum(weather_daily$hot)
 
+#percentage of hot days
+sum(weather_daily$hot)/(nrow(weather_daily))
 
-## aggregate weather categories according to month-year combination
+
+#due to the design of the categrozation, it is possible that da specfic day can belong to none, one or several 
+#of the diferent weather categories
+
+
+## aggregate weather categories according to month-year combination to create day counts per month
 weather_days = weather_daily[, c(12:17)]
 days         = data.frame(weather_days %>% group_by(date_id) %>% summarize_all(sum))
 
@@ -125,17 +152,17 @@ tourism$windy  = days$windy
 tourism$hot    = days$hot
 
 
-## create dataframe with monthly weather deviations ------------------------------
+## create data frame with monthly weather deviations ------------------------------
 weather_num   = data.frame(tourism[, c(3:11, 13, 14)])
 weather_means = data.frame(month_means[3:13])
 
-#compare observations
+#compare variable names
 data.frame(colnames(weather_num), colnames(weather_means))
 
 #repeat means for whole observation period
 weather_means = do.call("rbind", replicate(8, weather_means, simplify = FALSE))
 
-#calculate deviations
+#calculate deviations by substracting the actual observations from the corresponding monthwise mean values
 weather_deviation = weather_num - weather_means
 
 
@@ -149,6 +176,10 @@ fa_n = scale(fa)
 #create correlation matrix for numeric variables
 fa_cor = round(cor(fa_n), 3)
 
+#the different temperature (MO_T...) measures are highly correlated with each other, the sun hours (MO_SD_S) are also 
+#also highly positively correlated with the temperature measures, sun hours are also negatively 
+#correlated with the degree of cloud coverage (MO_N)
+
 #visualize correlations
 corrplot(fa_cor, method="circle", type = "upper", col = brewer.pal(n=8, name="RdYlBu"))
 
@@ -156,6 +187,10 @@ corrplot(fa_cor, method="circle", type = "upper", col = brewer.pal(n=8, name="Rd
 plot(eigen(cor(fa[, 3:8]))$values, type = "o", col = "blue", pch = 16, 
      cex = 2, xlab = "Number of Factors", ylab = "Eigenvalues", lwd = 2)
 abline(h = 1, lwd = 2, col = "red")
+
+#the optimal number of factors for this analysis is a two factor solution, because the two factor
+#solution delivers a eigenvalue score which is still above 1, using the "elbow" technique to decide for 
+#the number of factors, a 1 factor solution would be more appropriate
 
 #extract factors
 rotated_factor = fa(r = fa, nfactors = 2, fm = "pa", rotate = "varimax", 
@@ -165,6 +200,10 @@ print(rotated_factor, cut = 0, digits = 3)
 #visualize factors
 factor.plot(rotated_factor, labels=rownames(rotated_factor$loadings))
 fa.diagram(rotated_factor, simple = FALSE, cut = 0, digits = 3, errors = TRUE)
+
+#as expected beforehand, the different temperature variables load heavily on the same factor. Therefore 
+#it is sensible to reduce them to one variable representing the temperature, i.e. average temperature
+#sunhours are left as an individual column
 
 
 ## use average temerature as single temperature variable

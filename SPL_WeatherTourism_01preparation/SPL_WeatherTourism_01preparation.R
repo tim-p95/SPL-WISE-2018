@@ -7,7 +7,7 @@
 
 
 ## set the working directory
-wd = "C:/Users/timpe_000/Desktop/sPL-WISE-2018/SPL_WeatherTourism_preparation"
+wd = "C:/Users/timpe_000/Desktop/sPL-WISE-2018/SPL_WeatherTourism_01preparation"
 setwd(wd)
 
 
