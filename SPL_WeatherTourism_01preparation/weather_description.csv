@@ -3,8 +3,10 @@ STATIONS_ID;Identification number of the weather measuring station
 QN_4;Quality level of the following columns
 MO_N;Monthly mean of the grade of cloud coverage
 MO_TT;Monthly mean of the air temperature in two meters height (°C)
-MO_TX;Monthly mean of the daily maximum of air temperature in two meters height (°C)
-MO_TN;Monthly mean of the daily minimum of air temperature in two meters height (°C)
+MO_TX;Monthly mean of the daily maximum of air temperature in
+;two meters height (°C)
+MO_TN;Monthly mean of the daily minimum of air temperature
+;in two meters height (°C)
 MO_FK;Monthly mean of the daily wind level on Beaufort-scale (Bft)
 MX_TX;Monthly maximum of air temperature in two meters height (°C)
 MX_FX;Monthly maximum of daily wind level maximum (m/s)
@@ -20,7 +22,9 @@ date_end;End of the interval of mesurement in R Date format
 FX;Daily maximum of of wind speed (m/s)
 FM;Daily mean of wind speed (m/s)
 RSK;Daily amount of rainfall (mm)
-RSKF;"Form of rainfall (0 - 9) -> 0-no rainfall; 1-only rain; 4-unknown form; 6-only rain; 7-only snow; 8-rain and sonw; 9-not measurable rainfall"
+RSKF;"Form of rainfall (0 - 9) -> 0-no rainfall; 1-only rain; "
+;"4-unknown form; 6-only rain; 7-only snow; 8-rain and sonw; "
+;9-not measurable rainfall
 SDK;Daily hours of Sunshine (h)
 NM;Daily mean of cloud coverage (1/8)
 TMK;Daily mean of temperature (°C)
