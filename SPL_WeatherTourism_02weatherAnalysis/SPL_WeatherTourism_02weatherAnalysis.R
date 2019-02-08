@@ -1,4 +1,4 @@
-# Name of Quantlet: SPL_WeatherTourism_weatherAnalysis
+# Name of Quantlet: SPL_WeatherTourism_02weatherAnalysis
 # Published in:     'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
 # Description:      'Analysis and Transformation of the daily and monthly weather observations, Categorization of Days, Visualization of Weather Developments'
 # Keywords:         meteorological analysis, categorization, transformation, visualization, missing data
@@ -56,8 +56,8 @@ weather_daily$FX[is.na(weather_daily$FX)] = mean(weather_daily$FX, na.rm = TRUE)
 weather_daily$FM[is.na(weather_daily$FM)] = mean(weather_daily$FM, na.rm = TRUE)
 weather_daily$NM[is.na(weather_daily$NM)] = mean(weather_daily$NM, na.rm = TRUE)
 
-#since there are no highly season specific variables like temperature, replacing the missing values 
-#with the overall mean is appropriate in this case
+#Since there are no highly season specific variables like temperature, replacing the missing values 
+#with the overall mean is appropriate in this case.
 
 
 ## long time development of weather for the whole available period of time ------------------------------
@@ -130,8 +130,8 @@ sum(weather_daily$hot)
 sum(weather_daily$hot)/(nrow(weather_daily))
 
 
-#due to the design of the categrozation, it is possible that da specfic day can belong to none, one or several 
-#of the diferent weather categories
+#Due to the design of the categrozation, it is possible that da specfic day can belong to none, one or 
+#several of the diferent weather categories.
 
 
 ## aggregate weather categories according to month-year combination to create day counts per month
@@ -176,9 +176,9 @@ fa_n = scale(fa)
 #create correlation matrix for numeric variables
 fa_cor = round(cor(fa_n), 3)
 
-#the different temperature (MO_T...) measures are highly correlated with each other, the sun hours (MO_SD_S) are also 
-#also highly positively correlated with the temperature measures, sun hours are also negatively 
-#correlated with the degree of cloud coverage (MO_N)
+#The different temperature (MO_T...) measures are highly correlated with each other. The sun hours (MO_SD_S)
+#are also highly positively correlated with the temperature measures. Sun hours are also negatively 
+#correlated with the degree of cloud coverage (MO_N).
 
 #visualize correlations
 corrplot(fa_cor, method="circle", type = "upper", col = brewer.pal(n=8, name="RdYlBu"))
@@ -188,9 +188,9 @@ plot(eigen(cor(fa[, 3:8]))$values, type = "o", col = "blue", pch = 16,
      cex = 2, xlab = "Number of Factors", ylab = "Eigenvalues", lwd = 2)
 abline(h = 1, lwd = 2, col = "red")
 
-#the optimal number of factors for this analysis is a two factor solution, because the two factor
-#solution delivers a eigenvalue score which is still above 1, using the "elbow" technique to decide for 
-#the number of factors, a 1 factor solution would be more appropriate
+#The optimal number of factors for this analysis is a two factor solution, because the two factor
+#solution delivers an eigenvalue score which is still above 1. Using the "elbow" technique to decide for 
+#the number of factors, a 1 factor solution would be more appropriate.
 
 #extract factors
 rotated_factor = fa(r = fa, nfactors = 2, fm = "pa", rotate = "varimax", 
@@ -201,9 +201,9 @@ print(rotated_factor, cut = 0, digits = 3)
 factor.plot(rotated_factor, labels=rownames(rotated_factor$loadings))
 fa.diagram(rotated_factor, simple = FALSE, cut = 0, digits = 3, errors = TRUE)
 
-#as expected beforehand, the different temperature variables load heavily on the same factor. Therefore 
+#As expected beforehand, the different temperature variables load heavily on the same factor. Therefore 
 #it is sensible to reduce them to one variable representing the temperature, i.e. average temperature
-#sunhours are left as an individual column
+#sunhours are left as an individual column.
 
 
 ## use average temerature as single temperature variable

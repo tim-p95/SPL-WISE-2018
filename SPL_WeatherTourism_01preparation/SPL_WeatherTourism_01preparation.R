@@ -1,4 +1,4 @@
-# Name of Quantlet: SPL_WeatherTourism_preparation
+# Name of Quantlet: SPL_WeatherTourism_01preparation
 # Published in:     'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
 # Description:      'Loading Packages, Import and first preparation of data, Description of Weather Variables'
 # Keywords:         packages, import, csv, date format, matching data sources
@@ -32,7 +32,7 @@ library(caret)
 # read monthly weather data and transform into data frame
 weather_all = data.frame(read.csv("weather_data.csv", header = TRUE, sep = ";", na.strings = "-999"))
 
-#missing values are representated by the value "-999" (replaced with NA)
+#Missing values are representated by the value "-999" (replaced with NA).
 
 # add dates in date format to replace orignal date structure
 weather_all$date_beg = as.Date(sapply(weather_all$MESS_DATUM_BEGINN, toString), format = "%Y%m%d")
@@ -46,8 +46,8 @@ weather_all$MESS_DATUM_ENDE   = NULL
 weather           = subset(weather_all, as.numeric(format(date_beg, format="%Y")) >= 2010)
 rownames(weather) = seq(1:nrow(weather))
 
-#observations for tourism start in January 2010 until December 2017 (96 observations)
-#weather data has to adapt to this time frame
+#Observations for tourism start in January 2010 until December 2017 (96 observations) and the
+#weather data has to adapted to this time frame.
 
 
 ## import daily weather data ------------------------------
@@ -66,7 +66,7 @@ weather_daily = subset(weather_all_daily, as.numeric(format(date, format="%Y")) 
 #deleting columns that are not relevant for the analysis, i.e. certaitn weather measures
 weather_daily[, c(1, 2, 5, 9, 11, 12, 14, 18)] = NULL
 
-#deleted columns: stations id (STATIONS_ID), quality levels (QN_3, QN_4), snow height (SHK_TAG), air
+#Deleted columns: stations id (STATIONS_ID), quality levels (QN_3, QN_4), snow height (SHK_TAG), air
 #pressure (VPM, PM), humidity (UPM), end of record (eor)
 
 #adding month-year combination for matching daily weather data with monthly tourism_data
@@ -78,8 +78,8 @@ weather_description = data.frame("variable" = c(as.character(colnames(weather)),
                                                 "--- DAILY OBSERVATIONS ---", 
                                                 as.character(colnames(weather_daily))))
 
-#because of the numerous different weather variables, a description of the oroginal column names from the 
-#weather station data is created, to have an useful orientation point during the whole analysis  
+#Because of the numerous different weather variables, a description of the original column names from the 
+#weather station data is created, to have an useful orientation point during the whole analysis.
 
 weather_description$description = c("Identification number of the weather measuring station", 
                                     "Quality level of the following columns", 

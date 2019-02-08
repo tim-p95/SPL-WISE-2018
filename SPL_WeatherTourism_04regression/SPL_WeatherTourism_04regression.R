@@ -1,4 +1,4 @@
-# Name of Quantlet:  SPL_WeatherTourism_regression
+# Name of Quantlet:  SPL_WeatherTourism_04regression
 # Published in:      'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
 # Description:       'Several Multiple Regression Models to measure the impact of weather factors on tourism'
 # Keywords:          regression model, multiple regression, autocorrelation, multicollinearity, heteroskedasticity
@@ -16,7 +16,7 @@ lr_data = data.frame("rel_guest_dev_basis" = tourism$rel_guest_dev_basis,
                      "avg_time"            = tourism$avg_time,
                      "MO_TT"               = tourism$MO_TT,
                      "MO_SD_S"             = tourism$MO_SD_S,
-                     "MO_RR"              = tourism$MO_RR)
+                     "MO_RR"               = tourism$MO_RR)
 
 
 ## Stage 1: run linear regression with absolute values for weather variables ------------------------------
@@ -45,21 +45,30 @@ dwtest(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 dwtest(rel_guest_dev_basis ~ .-rel_night_dev_basis-avg_time, data = lr_data)
 dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 
+#Since the p-values for the Durbin watson tests are far from 0.05, we cannot reject the Null-
+#Hypothesis that there is no autocorrelation.
+
 
 ## check for multicollineraity
 #correlations
 cor(lr_data[, 4:6])
 
-#variance infation factor
+#variance inflation factor
 car::vif(lm_avg_nights)
 car::vif(lm_guest_dev)
 car::vif(lm_night_dev)
+
+#The VIF-values are all below 5. Therefore there should be no multicollineratiy among the independent
+#variables.
 
 
 ## check for heteroskedasticity
 bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)
+
+#Since the p-values for the Breusch-Pagan tests are ot close to 0.05, we cannot reject the Null-
+#Hypothesis that there is no heteroskedasticity.
 
 
 ## Stage 2: run linear regression with deviations of weather variables ------------------------------
@@ -95,6 +104,12 @@ dwtest(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 dwtest(rel_guest_dev_basis ~ .-rel_night_dev_basis-avg_time, data = lr_data)
 dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 
+#The p-values for the Durbin watson tests are far from 0.05 for the model 2 and 3 (i.e. the relative 
+#deviation for guests and nights). The Null-Hypothesis cannot be rejected in these cases.THerefore,
+#there is probably no autocorrelation in these models. The Durbin-Watson test for the model with 
+#the average number of nights per guest has a much lower p-Value (< 0.0005), meaning that we definitely
+#can reject the Null-Hypothesis of no autocorrelation.
+
 
 ## check for multicollineraity
 #correlations
@@ -105,14 +120,17 @@ car::vif(lm_avg_nights)
 car::vif(lm_guest_dev)
 car::vif(lm_night_dev)
 
+#The VIF-values are all below 5. Therefore there should be no multicollineratiy among the independent
+#variables.
+
 
 ## check for heteroskedasticity
 bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)
 
-
-
+#Since the p-values for the Breusch-Pagan tests are not close to 0.05, we cannot reject the Null-
+#Hypothesis that there is no heteroskedasticity.
 
 
 ## Stage 3: regression with adding day counts of weather categories
@@ -148,6 +166,9 @@ dwtest(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 dwtest(rel_guest_dev_basis ~ .-rel_night_dev_basis-avg_time, data = lr_data)
 dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 
+#Since the p-values for the Breusch-Pagan tests are not close to 0.05, we cannot reject the Null-
+#Hypothesis that there is no heteroskedasticity.
+
 
 ## check for multicollineraity
 #correlations
@@ -158,8 +179,16 @@ car::vif(lm_avg_nights)
 car::vif(lm_guest_dev)
 car::vif(lm_night_dev)
 
+#The VIF-values are all below 5. Therefore there should be no multicollineratiy among the independent
+#variables.
+
 
 ## check for heteroskedasticity with 
 bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)
+
+#The p-values for the Breusch-Pagan tests are not above 0.05 for the first and the third model. For these,
+#we cannot reject the Null-Hypothesis that there is no heteroskedasticity. However for the second model 
+#with the relative deviation of guests, there is a significant result (p-Value < 0.02), meaning that
+#we have to reject the Null-Hypothesis of no heteroskedasticity.
