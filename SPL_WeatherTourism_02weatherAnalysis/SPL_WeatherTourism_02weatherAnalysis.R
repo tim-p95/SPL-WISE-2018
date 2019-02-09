@@ -10,30 +10,30 @@
 ## Analysis of Weather
 ############################################################
 
-## Handle Missing Data for monthly weather data ------------------------------
-#count columnwise NAs
+### Handle Missing Data for monthly weather data ###
+#count column-wise NAs
 na_count = sapply(tourism, function(x){sum(is.na(x))})
 
 #extracting relevant columns
 na_count[which(na_count != 0)]
 
-## calculate monthwise means for all potentially relevant tourism and weather variables
+## calculate month-wise means for all potentially relevant tourism and weather variables
 #extract numeric columns
 numeric_cols             = unlist(lapply(tourism, is.numeric)) 
 tourism_num              = data.frame("month" = seq(1:12), tourism[ , numeric_cols])
 tourism_num[c(2, 3, 13)] = NULL
 
-#monthwise aggregation by calculating the mean
+#month-wise aggregation by calculating the mean
 mon = tourism_num %>%
   group_by(month) %>%
   summarise_all(funs(mean), na.rm = TRUE)
 
 month_means = data.frame(mon)
 
-#change column names of monthwise observations by adding _mean label to the name
+#change column names of month-wise observations by adding '_mean' label to the name
 colnames(month_means) = paste("mean_", colnames(tourism_num), sep = "")
 
-#addig month names (January - December)
+#adding month names (January - December)
 month_means = data.frame("month_name" = month.name, month_means)
 
 #exchanging the missing values with the mean of the particular month from month_means data frame
@@ -45,7 +45,7 @@ tourism$MO_RR[is.na(tourism$MO_RR)] =
   month_means$mean_MO_RR[as.numeric(format(tourism$date_beg, format="%m"))[is.na(tourism$MO_RR)]]
 
 
-## check for missing data in daily weather data ------------------------------
+### check for missing data in daily weather data ###
 na_count = sapply(weather_daily, function(x){sum(is.na(x))})
 
 #extracting relevant columns
@@ -56,11 +56,11 @@ weather_daily$FX[is.na(weather_daily$FX)] = mean(weather_daily$FX, na.rm = TRUE)
 weather_daily$FM[is.na(weather_daily$FM)] = mean(weather_daily$FM, na.rm = TRUE)
 weather_daily$NM[is.na(weather_daily$NM)] = mean(weather_daily$NM, na.rm = TRUE)
 
-#Since there are no highly season specific variables like temperature, replacing the missing values 
-#with the overall mean is appropriate in this case.
+#Since there are no highly season-specific variables missing like temperature, replacing the  
+#missing values with the overall mean is appropriate in this case.
 
 
-## long time development of weather for the whole available period of time ------------------------------
+### long time development of weather for the whole available period of time ###
 #temperature development (1887 - 2017)
 ggplot(data = weather_all, aes(x = date_beg)) + 
   geom_smooth(aes(y = MO_TT, color = "MO_TT"), method = "auto", se = FALSE) +
@@ -79,7 +79,7 @@ ggplot(data = weather_all, aes(x = date_beg)) +
 
 
 
-## categorize days as rainy, sunny, cloudy, windy, hot ------------------------------
+### categorize days as rainy, sunny, cloudy, windy, hot ###
 #rainy days (rainfall amount above 1mm a day)
 weather_daily$rainy = sapply(weather_daily$RSK, FUN = function(x) ifelse(x > 1, 1, 0))
 
@@ -130,11 +130,11 @@ sum(weather_daily$hot)
 sum(weather_daily$hot)/(nrow(weather_daily))
 
 
-#Due to the design of the categrozation, it is possible that da specfic day can belong to none, one or 
-#several of the diferent weather categories.
+#Due to the design of the categorization, it is possible that a specific day can belong to none, one or 
+#several of the different weather categories.
 
 
-## aggregate weather categories according to month-year combination to create day counts per month
+### aggregate weather categories according to month-year combination to create day counts per month ###
 weather_days = weather_daily[, c(12:17)]
 days         = data.frame(weather_days %>% group_by(date_id) %>% summarize_all(sum))
 
@@ -152,7 +152,7 @@ tourism$windy  = days$windy
 tourism$hot    = days$hot
 
 
-## create data frame with monthly weather deviations ------------------------------
+### create data frame with monthly weather deviations ###
 weather_num   = data.frame(tourism[, c(3:11, 13, 14)])
 weather_means = data.frame(month_means[3:13])
 
@@ -162,12 +162,12 @@ data.frame(colnames(weather_num), colnames(weather_means))
 #repeat means for whole observation period
 weather_means = do.call("rbind", replicate(8, weather_means, simplify = FALSE))
 
-#calculate deviations by substracting the actual observations from the corresponding monthwise mean values
+#calculate deviations by subtracting the actual observations from the corresponding month-wise mean values
 weather_deviation = weather_num - weather_means
 
 
-## check for possible reductions of weather variables using factor analysis ------------------------------
-#prepare seperate data frame for factor analysis
+### check for possible reductions of weather variables using factor analysis ###
+#prepare data frame for factor analysis
 fa = data.frame(weather_num)
 
 #normalize data frame
@@ -206,5 +206,5 @@ fa.diagram(rotated_factor, simple = FALSE, cut = 0, digits = 3, errors = TRUE)
 #sunhours are left as an individual column.
 
 
-## use average temerature as single temperature variable
+## use average temperature as single temperature variable (deleting other temperature columns)
 tourism[, c(5:6, 8, 10)] = NULL

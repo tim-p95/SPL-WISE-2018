@@ -28,13 +28,13 @@ library(caret)
 ## Data Import
 ############################################################
 
-## import monthly weather data ------------------------------
-# read monthly weather data and transform into data frame
+### import monthly weather data ###
+#read monthly weather data and transform it into a data frame
 weather_all = data.frame(read.csv("weather_data.csv", header = TRUE, sep = ";", na.strings = "-999"))
 
-#Missing values are representated by the value "-999" (replaced with NA).
+#Missing values are represented by the value "-999" (replaced with NA).
 
-# add dates in date format to replace orignal date structure
+#add dates in date format to replace original date structure
 weather_all$date_beg = as.Date(sapply(weather_all$MESS_DATUM_BEGINN, toString), format = "%Y%m%d")
 weather_all$date_end = as.Date(sapply(weather_all$MESS_DATUM_ENDE, toString), format = "%Y%m%d")
 
@@ -42,7 +42,7 @@ weather_all$date_end = as.Date(sapply(weather_all$MESS_DATUM_ENDE, toString), fo
 weather_all$MESS_DATUM_BEGINN = NULL
 weather_all$MESS_DATUM_ENDE   = NULL
 
-# get relevant time period of the weather data to match tourism observations
+#get relevant time period of the weather data to match tourism observations
 weather           = subset(weather_all, as.numeric(format(date_beg, format="%Y")) >= 2010)
 rownames(weather) = seq(1:nrow(weather))
 
@@ -50,20 +50,20 @@ rownames(weather) = seq(1:nrow(weather))
 #weather data has to adapted to this time frame.
 
 
-## import daily weather data ------------------------------
+### import daily weather data ###
 #read daily weather data and transform into data frame
 weather_all_daily = data.frame(read.csv("weather_data_daily.csv", header = TRUE, sep = ";", na.strings = "-999"))
 
 #converting date into R Date format and replace former format
 weather_all_daily$date = as.Date(sapply(weather_all_daily$MESS_DATUM, toString), format = "%Y%m%d")
 
-#replace former date variable
+#delete former date variable
 weather_all_daily$MESS_DATUM = NULL
 
 #extract relevant period of time
 weather_daily = subset(weather_all_daily, as.numeric(format(date, format="%Y")) >= 2010)
 
-#deleting columns that are not relevant for the analysis, i.e. certaitn weather measures
+#deleting columns that are not relevant for the analysis, i.e. certain weather measures
 weather_daily[, c(1, 2, 5, 9, 11, 12, 14, 18)] = NULL
 
 #Deleted columns: stations id (STATIONS_ID), quality levels (QN_3, QN_4), snow height (SHK_TAG), air
@@ -73,7 +73,7 @@ weather_daily[, c(1, 2, 5, 9, 11, 12, 14, 18)] = NULL
 weather_daily$date_id = as.character(format(weather_daily$date, format = "%m-%Y"))
 #example: January 2010 = "01-2010"
 
-## description for weather variables
+### description for weather variables ###
 weather_description = data.frame("variable" = c(as.character(colnames(weather)), 
                                                 "--- DAILY OBSERVATIONS ---", 
                                                 as.character(colnames(weather_daily))))
@@ -105,19 +105,19 @@ weather_description$description = c("Identification number of the weather measur
                                     "Daily mean of wind speed (m/s)",
                                     "Daily amount of rainfall (mm)",
                                     "Form of rainfall (0 - 9) -> 0-no rainfall; 1-only rain; 4-unknown form; 
-                                    6-only rain; 7-only snow; 8-rain and sonw; 9-not measurable rainfall",
+                                    6-only rain; 7-only snow; 8-rain and snow; 9-not measurable rainfall",
                                     "Daily hours of Sunshine (h)",
                                     "Daily mean of cloud coverage (1/8)",
                                     "Daily mean of temperature (°C)",
-                                    "Daily maximum of air temperature in two meters heigth (°C)",
-                                    "Daily minimum of air temperature in two meters heigth (°C)",
-                                    "Daily minimum of air temperature in 0.05 meters heigth (°C)",
+                                    "Daily maximum of air temperature in two meters height (°C)",
+                                    "Daily minimum of air temperature in two meters height (°C)",
+                                    "Daily minimum of air temperature in 0.05 meters height (°C)",
                                     "Date of measurement in R Date format (format = '%Y%m%d')",
                                     "Combination of month and year (format = '%Y-%m')"
 )
 
 
-## import tourism data ------------------------------
+### import tourism data ###
 #monthly number of guests
 guests = data.frame(read.csv("guests.csv", header = TRUE, sep = ";"))
 
@@ -133,9 +133,9 @@ guest_count = guests$num_guests
 night_count = overnight$num_nights
 
 
-## combining weather data and tourism data in a data frame called tourism
+### combining weather data and tourism data in a data frame called tourism ###
 tourism = data.frame(weather, guest_count, night_count)
 
 
-## including names for month (January - December)
+### including names for month (January - December) ###
 tourism$month_name = factor(rep(c(month.name), 8), levels = c(month.name), ordered = TRUE)

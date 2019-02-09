@@ -10,7 +10,7 @@
 ## Build Regression Models
 ############################################################
 
-## extract the relevant data for the analysis
+### extract the relevant data for the analysis ###
 lr_data = data.frame("rel_guest_dev_basis" = tourism$rel_guest_dev_basis,
                      "rel_night_dev_basis" = tourism$rel_night_dev_basis,
                      "avg_time"            = tourism$avg_time,
@@ -19,7 +19,7 @@ lr_data = data.frame("rel_guest_dev_basis" = tourism$rel_guest_dev_basis,
                      "MO_RR"               = tourism$MO_RR)
 
 
-## Stage 1: run linear regression with absolute values for weather variables ------------------------------
+### Stage 1: run linear regression with absolute values for weather variables ###
 #1 average nights per guest
 lm_avg_nights = lm(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 summary(lm_avg_nights)
@@ -33,23 +33,23 @@ lm_night_dev = lm(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = l
 summary(lm_night_dev)
 
 
-#create output tables for latex
+### create output tables for latex ###
 stargazer(lm_avg_nights, lm_guest_dev, lm_night_dev, title="Regression Results with Original Weather Measures", 
           align=TRUE, 
           dep.var.labels=c("Average Nights","Deviation of Guests", "Deviation of Nights"),
           covariate.labels=c("Temperature (°C)","Sun Hours (h)", "Rainfall (mm)"))
 
 
-## Durbin-Watson Test for autocorrelation
+### Durbin-Watson Test for autocorrelation ###
 dwtest(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 dwtest(rel_guest_dev_basis ~ .-rel_night_dev_basis-avg_time, data = lr_data)
 dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 
-#Since the p-values for the Durbin watson tests are far from 0.05, we cannot reject the Null-
+#Since the p-values for the Durbin-Watson tests are far from 0.05, we cannot reject the Null-
 #Hypothesis that there is no autocorrelation.
 
 
-## check for multicollineraity
+### check for multicollinearity ###
 #correlations
 cor(lr_data[, 4:6])
 
@@ -58,11 +58,11 @@ car::vif(lm_avg_nights)
 car::vif(lm_guest_dev)
 car::vif(lm_night_dev)
 
-#The VIF-values are all below 5. Therefore there should be no multicollineratiy among the independent
+#The VIF-values are all below 5. Therefore there should be no multicollinearity among the independent
 #variables.
 
 
-## check for heteroskedasticity
+### check for heteroskedasticity ###
 bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)
@@ -71,7 +71,7 @@ bptest(lm_night_dev)
 #Hypothesis that there is no heteroskedasticity.
 
 
-## Stage 2: run linear regression with deviations of weather variables ------------------------------
+### Stage 2: run linear regression with deviations of weather variables ###
 #adjust data for linear regression
 lr_data[, 4:6]   = NULL
 lr_data$temp_dev = weather_deviation$MO_TT
@@ -92,26 +92,26 @@ lm_night_dev = lm(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = l
 summary(lm_night_dev)
 
 
-#create output tables for latex ------------------------------
+### create output tables for latex ###
 stargazer(lm_avg_nights, lm_guest_dev, lm_night_dev, title="Regression Results with deviations weather measures", 
           align=TRUE, 
           dep.var.labels=c("Average Nights","Deviation of Guests", "Deviation of Nights"),
           covariate.labels=c("Deviation of Temperature","Deviation of Sun Hours", "Deviation of Rainfall"))
 
 
-## Durbin-Watson Test for autocorrelation ------------------------------
+### Durbin-Watson Test for autocorrelation ###
 dwtest(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 dwtest(rel_guest_dev_basis ~ .-rel_night_dev_basis-avg_time, data = lr_data)
 dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 
-#The p-values for the Durbin watson tests are far from 0.05 for the model 2 and 3 (i.e. the relative 
-#deviation for guests and nights). The Null-Hypothesis cannot be rejected in these cases.THerefore,
+#The p-values for the Durbin-Watson tests are far from 0.05 for the model 2 and 3 (i.e. the relative 
+#deviation for guests and nights). The Null-Hypothesis cannot be rejected in these cases.Therefore,
 #there is probably no autocorrelation in these models. The Durbin-Watson test for the model with 
 #the average number of nights per guest has a much lower p-Value (< 0.0005), meaning that we definitely
 #can reject the Null-Hypothesis of no autocorrelation.
 
 
-## check for multicollineraity
+### check for multicollineraity ###
 #correlations
 cor(lr_data[, 4:6])
 
@@ -120,11 +120,11 @@ car::vif(lm_avg_nights)
 car::vif(lm_guest_dev)
 car::vif(lm_night_dev)
 
-#The VIF-values are all below 5. Therefore there should be no multicollineratiy among the independent
+#The VIF-values are all below 5. Therefore there should be no multicollinearity among the independent
 #variables.
 
 
-## check for heteroskedasticity
+### check for heteroskedasticity ###
 bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)
@@ -133,7 +133,7 @@ bptest(lm_night_dev)
 #Hypothesis that there is no heteroskedasticity.
 
 
-## Stage 3: regression with adding day counts of weather categories
+### Stage 3: regression with adding day counts of weather categories ###
 #adjust data for regression
 lr_data$rainy  = days$rainy
 lr_data$sunny  = days$sunny
@@ -153,7 +153,7 @@ summary(lm_guest_dev)
 lm_night_dev = lm(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 summary(lm_night_dev)
 
-#create output tables for latex
+### create output tables for latex ###
 stargazer(lm_avg_nights, lm_guest_dev, lm_night_dev, title="Regression Results with deviations weather measures and day counts for weather categories", 
           align=TRUE, 
           dep.var.labels=c("Average Nights","Deviation of Guests", "Deviation of Nights"),
@@ -161,7 +161,7 @@ stargazer(lm_avg_nights, lm_guest_dev, lm_night_dev, title="Regression Results w
                              "Deviation of Rainfall", "Rainy Days", "Sunny Days", "Cloudy Days", "Windy Days", "Hot Days"))
 
 
-## Durbin-Watson Test for autocorrelation
+### Durbin-Watson Test for autocorrelation ###
 dwtest(avg_time ~ .-rel_guest_dev_basis-rel_night_dev_basis, data = lr_data)
 dwtest(rel_guest_dev_basis ~ .-rel_night_dev_basis-avg_time, data = lr_data)
 dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
@@ -170,7 +170,7 @@ dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 #Hypothesis that there is no heteroskedasticity.
 
 
-## check for multicollineraity
+### check for multicollinearity ###
 #correlations
 cor(lr_data[, 4:11])
 
@@ -179,11 +179,11 @@ car::vif(lm_avg_nights)
 car::vif(lm_guest_dev)
 car::vif(lm_night_dev)
 
-#The VIF-values are all below 5. Therefore there should be no multicollineratiy among the independent
+#The VIF-values are all below 5. Therefore there should be no multicollinearity among the independent
 #variables.
 
 
-## check for heteroskedasticity with 
+### check for heteroskedasticity with ###
 bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)

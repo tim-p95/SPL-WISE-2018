@@ -10,7 +10,7 @@
 ## Analysis of Tourism
 ############################################################
 
-## checking for outliers in guests and nights ------------------------------
+### checking for outliers in guests and nights ###
 ggplot(tourism, aes(y = guest_count, x = month_name, fill=month_name)) +
   geom_boxplot(outlier.colour = "red", outlier.shape = 1) + 
   stat_summary(fun.y=mean, geom="point", shape=5, size=4) +
@@ -39,27 +39,27 @@ ggplot(tourism, aes(y = night_count, x = month_name, fill=month_name)) +
         legend.justification = c(1,1), 
         legend.position      = c(1,1))
 
-#It can be seen that there is one outlier in april, represented by the red cirlce in both, the number of
+#It can be seen that there is one outlier in April, represented by the red circle in both, the number of
 #guests and the number of nights.
 
 
-## extracting the outlier in April
+### extracting the outlier in April ###
 april      = subset(tourism, month_name == "April")
 april_outl = which(april$guest_count > mean(april$guest_count) + 2*sd(april$guest_count))
 april[april_outl, ]
 
-#The outlier was in april 2017. Since the vales are not unrealistic, the data point was not changed.
+#The outlier was in April 2017. Since the vales are not unrealistic, the data point was not changed.
 
 
-## calculate correlations between number of guests and nights ------------------------------
+### calculate correlations between number of guests and nights ###
 cor(tourism$guest_count, tourism$night_count)
 
 #There is a high correlation between the number of guests and nights. Therefore, the following
 #visualizations are only made for the number of guests, since the graphs would look quite similar
-#for the number of nights, just with upscaled numbers.
+#for the number of nights, just with up-scaled numbers.
 
 
-## visualize distribution of guests counts ------------------------------
+### visualize distribution of guests counts ###
 ggplot(tourism, aes(x = guest_count)) + 
   geom_histogram(aes(y=..density..), binwidth = 2500, colour="black", fill="white") +
   geom_density(alpha=.15, fill="#31B404") +
@@ -72,11 +72,11 @@ ggplot(tourism, aes(x = guest_count)) +
         panel.grid.minor = element_blank(), 
         axis.line        = element_line(colour = "black"))
 
-#There are two "peaks" in the number of guests. THe first represents the no-season time and the second 
+#There are two "peaks" in the number of guests. The first represents the no-season time and the second 
 #one the tourism season period in the region.
 
 
-## visualize development of guests ------------------------------
+### visualize development of guests ###
 ggplot(data = tourism, aes(x = date_beg, y = guest_count)) + 
   geom_point() +
   stat_smooth(span=1/12, col = "#ff4d4d", se = FALSE) +
@@ -97,11 +97,11 @@ ggplot(data = tourism, aes(x = date_beg, y = guest_count)) +
 #between winter and summer. Also, there is an overall upward trend, represented by the blue line.
 
 
-## adding average number of days per guest spent in region (overnight stays / guests) ------------------------------
+### adding average number of days per guest spent in region (overnight stays / guests) ###
 tourism$avg_time = tourism$night_count/tourism$guest_count
 
 
-## creating overall monthly averages and standard deviations for tourism data ------------------------------
+### creating overall monthly averages and standard deviations for tourism data ###
 tourism_tab = data.table(tourism)
 monthly     = data.frame(tourism_tab[,list(mean_guest  = mean(guest_count),
                                            sd_guest    = sd(guest_count), 
@@ -111,11 +111,11 @@ monthly     = data.frame(tourism_tab[,list(mean_guest  = mean(guest_count),
 
 colnames(monthly)[1] = "Month"
 
-#Having now the monthwise means, it is possible to calculate the deviations of tourism flows for the 
+#Having now the month-wise means, it is possible to calculate the deviations of tourism flows for the 
 #individual data points.
 
 
-## comparing average guests per month to find out seasonal month ------------------------------
+### comparing average guests per month to find out seasonal month ###
 ggplot(data = monthly, aes(x = Month, y = mean_guest)) +
   geom_bar(stat="identity") +
   ggtitle("Average Number of Guests in Corresponding Month") +
@@ -145,7 +145,7 @@ season_check = function(x, y){
 
 tourism$season = factor(sapply(as.list(tourism$month_name), season_check, season_month))
 
-#According to the above definition, the tourism season in the region is from May until October
+#According to the above definition, the tourism season in the region is from May until October.
 
 
 #comparing numbers in season and no season
@@ -156,7 +156,7 @@ mean(tourism$guest_count[tourism$season == "No"])
 #non-season period.
 
 
-##development of average number of nights per guest ------------------------------
+### development of average number of nights per guest ###
 ggplot(data = tourism, aes(x = date_beg, y = avg_time)) + 
   geom_point() +
   stat_smooth(span=1/12, col = "#ff4d4d", se = FALSE) +
@@ -175,7 +175,7 @@ ggplot(data = tourism, aes(x = date_beg, y = avg_time)) +
 #the blue line again. This means that the average duration of stay decreased during the observation period.
 
 
-## calculate the absolute deveation of guests and overnigth stays from monthly mean ------------------------------
+### calculate the absolute deviation of guests and overnight stays from monthly mean ###
 tourism$abs_guest_deviation = 
   tourism$guest_count - c(replicate(8, month_means$mean_guest_count))
 tourism$abs_night_deviation = 
@@ -187,18 +187,18 @@ plot(tourism$abs_guest_deviation)
 #the number of guests and nights.
 
 
-## calculate relative deviation in percent ------------------------------
+### calculate relative deviation in percent ###
 tourism$rel_guest_deviation = tourism$abs_guest_deviation/tourism$guest_count
 tourism$rel_night_deviation = tourism$abs_night_deviation/tourism$night_count
 
 plot(tourism$rel_guest_deviation)
 
-#We can observe the same systematic upward trend for the relative deviation with the same reason. 
-#Therefore it is necessary to recalculate the number of guests and nights withut the growth 
+#We can observe the same systematic upward trend for the relative deviation with the same reasoning. 
+#Therefore it is necessary to recalculate the number of guests and nights without the growth 
 #developments to use them in the analysis.
 
 
-## calculate annual growth of guests and nights compared to basis year = 2010 ------------------------------
+### calculate annual growth of guests and nights compared to basis year = 2010 ###
 obs             = data.frame("year" = format(tourism$date_beg, format = "%Y"))
 obs$guest_count = tourism$guest_count
 obs$night_count = tourism$night_count
@@ -214,7 +214,7 @@ years_index$night_growth = (years_index$night_count/years_index$night_count[1])-
 ggplot(years_index, aes(x = c(2010:2017))) + 
   geom_line(aes(y = guest_growth, color = "blue")) +
   geom_line(aes(y = night_growth, color = "red")) +
-  ggtitle("Development of Growthrates for Guests and Overnight Stays") +
+  ggtitle("Development of Growth-rates for Guests and Overnight Stays") +
   xlab("Year") + 
   ylab("Growth rate") +
   scale_colour_manual(labels = c("Guests", "Nights"), values = c("blue", "red")) +
@@ -233,7 +233,7 @@ ggplot(years_index, aes(x = c(2010:2017))) +
 #and 36,7% for the number of nights per year.
 
 
-## recalculate guests and nights "without" growth (in values of basis year 2010) ------------------------------
+### recalculate guests and nights "without" growth (in values of basis year 2010) ###
 tourism$guest_basis = 0
 
 j = 2010
@@ -256,7 +256,7 @@ for(i in c(1:8)){
 }
 
 
-## check adjusted development ------------------------------
+### check adjusted development ###
 ggplot(data = tourism, aes(x = date_beg, y = guest_basis)) + 
   geom_point() +
   stat_smooth(span=1/12, col = "#ff4d4d", se = FALSE) +
@@ -273,10 +273,10 @@ ggplot(data = tourism, aes(x = date_beg, y = guest_basis)) +
 
 #By using the indexed versions of the tourism measures, we can now see that there is no overall 
 #upward trend anymore. Therefore, calculating the deviations from the indexed values no has no 
-#systematic trend anymore. The deviations can now be used for the analysis.
+#systematic trend any more. The deviations can now be used for the analysis.
 
 
-## calculate monthly means of newly generated indexed basis variables ------------------------------
+### calculate monthly means of newly generated indexed basis variables ###
 basis             = data.frame("month" = rep(seq(1:12), 8))
 basis$guest_basis = tourism$guest_basis
 basis$night_basis = tourism$night_basis
@@ -289,7 +289,7 @@ mon_basis = data.frame(basis[,list(mean_guest_basis  = mean(guest_basis),
                              by=basis$month])
 
 
-## calculate the deveation of guests and overnigth stays from monthly mean of the basis observations ------------------------------
+### calculate the deveation of guests and overnigth stays from monthly mean of the basis observations ###
 tourism$abs_guest_dev_basis = tourism$guest_basis - c(replicate(8, mon_basis$mean_guest_basis))
 tourism$abs_night_dev_basis = tourism$night_basis - c(replicate(8, mon_basis$mean_nights_basis))
 
@@ -298,10 +298,10 @@ tourism$abs_night_dev_basis = tourism$night_basis - c(replicate(8, mon_basis$mea
 
 plot(tourism$abs_guest_dev_basis)
 
-#Now there is no systematic trend in the data anymore.
+#Now there is no systematic trend in the data any more.
 
 
-## find out relative deviation in percent from monthly mean of the basis observations ------------------------------
+### find out relative deviation in percent from monthly mean of the basis observations ###
 tourism$rel_guest_dev_basis = tourism$abs_guest_dev_basis/tourism$guest_basis
 tourism$rel_night_dev_basis = tourism$abs_night_dev_basis/tourism$night_basis
 
