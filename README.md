@@ -1,3 +1,3 @@
-![GitHub Logo](/images/banner.png)
+![banner](/images/banner.png)
 
-![GitHub Logo](/images/qlogo.png) # SPL_WeatherTourism
+![qlogo](/images/qlogo.png) # SPL_WeatherTourism
