@@ -16,7 +16,7 @@ Author:           Tim Peschenz
 Submitted:        So, Mar 17 2019
 ```
 
-![banner](../images/SPL_WeatherTourism_02weatherAnalysis_temp_long.png)
+![temp_long](SPL_WeatherTourism_02weatherAnalysis_temp_long.png)
 
 
 
