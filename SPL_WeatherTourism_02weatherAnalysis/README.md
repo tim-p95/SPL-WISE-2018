@@ -239,5 +239,3 @@ fa.diagram(rotated_factor, simple = FALSE, cut = 0, digits = 3, errors = TRUE)
 ## use average temperature as single temperature variable (deleting other temperature columns)
 tourism[, c(5:6, 8, 10)] = NULL
 
-```R
-
