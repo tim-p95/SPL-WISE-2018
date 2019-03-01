@@ -18,8 +18,8 @@ Submitted:        So, Mar 17 2019
 ```
 
 
-# R Code
-```
+## R Code
+```R
 # Name of Quantlet: SPL_WeatherTourism_01preparation
 # Published in:     'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
 # Description:      'Loading Packages, Import and first preparation of data, Description of Weather Variables'
@@ -161,4 +161,4 @@ tourism = data.frame(weather, guest_count, night_count)
 
 ### including names for month (January - December) ###
 tourism$month_name = factor(rep(c(month.name), 8), levels = c(month.name), ordered = TRUE)
-```
+```R
