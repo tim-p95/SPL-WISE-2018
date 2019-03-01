@@ -160,4 +160,3 @@ tourism = data.frame(weather, guest_count, night_count)
 
 ### including names for month (January - December) ###
 tourism$month_name = factor(rep(c(month.name), 8), levels = c(month.name), ordered = TRUE)
-```R
