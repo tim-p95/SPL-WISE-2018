@@ -1,6 +1,6 @@
 ![banner](../images/banner.png)
 
-# SPL_WeatherTourism_01weatherAnalysis ![qloqo](../images/qloqo.png) 
+# SPL_WeatherTourism_02weatherAnalysis ![qloqo](../images/qloqo.png) 
 
 ```
 Name of Quantlet: SPL_WeatherTourism_02weatherAnalysis
