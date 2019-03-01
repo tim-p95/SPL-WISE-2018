@@ -1,4 +1,4 @@
-![banner](SPL-WISE-2018/images/banner.png)
+![banner](../images/banner.png)
 
 # SPL_WeatherTourism_01weatherAnalysis ![qloqo](SPL-WISE-2018/images/qloqo.png) 
 
