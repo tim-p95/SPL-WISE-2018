@@ -1,7 +1,7 @@
 ![banner](/images/banner.png)
 
 ![qloqo](/images/qloqo.png) 
-# SPL_WeatherTourism_01preparation
+# SPL_WeatherTourism_01preparation ![qloqo](/images/qloqo.png) 
 
 ```
 Name of Quantlet: SPL_WeatherTourism_01preparation
@@ -29,7 +29,7 @@ Submitted:        So, Mar 17 2019
 
 
 ## set the working directory
-wd = "C:/Users/timpe_000/Desktop/sPL-WISE-2018/SPL_WeatherTourism_01preparation"
+wd = "C:/Users/timpe_000/Desktop/SPL-WISE-2018/SPL_WeatherTourism_01preparation"
 setwd(wd)
 
 
