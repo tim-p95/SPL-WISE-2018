@@ -1,3 +1,3 @@
 ![GitHub Logo](/images/banner.png)
 
-# SPL-WISE-2018
+![GitHub Logo](/images/qlogo.png) # SPL_WeatherTourism
