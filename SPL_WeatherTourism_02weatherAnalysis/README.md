@@ -18,6 +18,12 @@ Submitted:        So, Mar 17 2019
 
 ![temp_long](SPL_WeatherTourism_02weatherAnalysis_temp_long.png)
 
+![scree](SPL_WeatherTourism_02weatherAnalysis_fa_scree.png)
+
+![fa1](SPL_WeatherTourism_02weatherAnalysis_fa_sol1.png)
+
+![fa2](SPL_WeatherTourism_02weatherAnalysis_fa_sol2.png)
+
 
 
 ## R Code
