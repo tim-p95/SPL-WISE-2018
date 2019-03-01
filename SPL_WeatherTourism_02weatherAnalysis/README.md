@@ -1,6 +1,6 @@
-![banner](/../images/banner.png)
+![banner](SPL-WISE-2018/images/banner.png)
 
-# SPL_WeatherTourism_01weatherAnalysis ![qloqo](/../images/qloqo.png) 
+# SPL_WeatherTourism_01weatherAnalysis ![qloqo](SPL-WISE-2018/images/qloqo.png) 
 
 ```
 Name of Quantlet: SPL_WeatherTourism_02weatherAnalysis
@@ -16,7 +16,7 @@ Author:           Tim Peschenz
 Submitted:        So, Mar 17 2019
 ```
 
-![banner](/../images/banner.png)
+![banner](SPL-WISE-2018/images/banner.png)
 
 
 
