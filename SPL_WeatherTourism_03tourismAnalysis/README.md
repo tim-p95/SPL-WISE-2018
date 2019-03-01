@@ -358,6 +358,4 @@ tourism$rel_guest_deviation = NULL
 tourism$rel_night_deviation = NULL
 
 
-```R
-
 
