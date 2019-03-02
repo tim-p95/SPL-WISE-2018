@@ -38,7 +38,7 @@ Submitted:         So, Mar 17 2019
 ```R
 # Name of Quantlet:  SPL_WeatherTourism_03tourismAnalysis
 # Published in:      'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
-# Description:       'Analysis and Transformation of the monthly observations of guests and nights, Creation of target variables for regression analysis, Visualization of Tourism Developments'
+# Description:       'Analysis and transformation of the monthly observations of guests and nights, Creation of target variables for regression analysis, Visualization of tourism developments'
 # Keywords:          tourism analysis, transformation, visualization, indexing, relative deviations
 # Author:            Tim Peschenz
 # Submitted:         So, Mar 17 2019
@@ -86,7 +86,7 @@ april      = subset(tourism, month_name == "April")
 april_outl = which(april$guest_count > mean(april$guest_count) + 2*sd(april$guest_count))
 april[april_outl, ]
 
-#The outlier was in April 2017. Since the vales are not unrealistic, the data point was not changed.
+#The outlier was in April 2017. Since the values are not unrealistic, the data point was not changed.
 
 
 ### calculate correlations between number of guests and nights ###
@@ -310,7 +310,7 @@ ggplot(data = tourism, aes(x = date_beg, y = guest_basis)) +
         axis.line        = element_line(colour = "black"))
 
 #By using the indexed versions of the tourism measures, we can now see that there is no overall 
-#upward trend anymore. Therefore, calculating the deviations from the indexed values no has no 
+#upward trend anymore. Therefore, calculating the deviations from the indexed values has no 
 #systematic trend any more. The deviations can now be used for the analysis.
 
 
@@ -327,7 +327,7 @@ mon_basis = data.frame(basis[,list(mean_guest_basis  = mean(guest_basis),
                              by=basis$month])
 
 
-### calculate the deveation of guests and overnigth stays from monthly mean of the basis observations ###
+### calculate the deveation of guests and overnight stays from monthly mean of the basis observations ###
 tourism$abs_guest_dev_basis = tourism$guest_basis - c(replicate(8, mon_basis$mean_guest_basis))
 tourism$abs_night_dev_basis = tourism$night_basis - c(replicate(8, mon_basis$mean_nights_basis))
 
@@ -348,7 +348,7 @@ tourism$rel_night_dev_basis = tourism$abs_night_dev_basis/tourism$night_basis
 
 plot(tourism$rel_guest_dev_basis)
 
-#The same is true for the relative deviations.
+#The same is true for the relative night deviations.
 
 
 #delete not relevant columns from tourism data frame
@@ -356,6 +356,3 @@ tourism$abs_guest_deviation = NULL
 tourism$abs_night_deviation = NULL
 tourism$rel_guest_deviation = NULL
 tourism$rel_night_deviation = NULL
-
-
-
