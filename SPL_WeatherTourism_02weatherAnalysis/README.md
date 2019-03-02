@@ -30,7 +30,7 @@ Submitted:        So, Mar 17 2019
 ```R
 # Name of Quantlet: SPL_WeatherTourism_02weatherAnalysis
 # Published in:     'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
-# Description:      'Analysis and Transformation of the daily and monthly weather observations, Categorization of Days, Visualization of Weather Developments'
+# Description:      'Analysis and transformation of the daily and monthly weather observations, Categorization of days, Visualization of weather developments'
 # Keywords:         meteorological analysis, categorization, transformation, visualization, missing data
 # Author:           Tim Peschenz
 # Submitted:        So, Mar 17 2019
@@ -75,7 +75,7 @@ tourism$MO_RR[is.na(tourism$MO_RR)] =
   month_means$mean_MO_RR[as.numeric(format(tourism$date_beg, format="%m"))[is.na(tourism$MO_RR)]]
 
 
-### check for missing data in daily weather data ###
+### check for missing values in daily weather data ###
 na_count = sapply(weather_daily, function(x){sum(is.na(x))})
 
 #extracting relevant columns
@@ -232,10 +232,11 @@ factor.plot(rotated_factor, labels=rownames(rotated_factor$loadings))
 fa.diagram(rotated_factor, simple = FALSE, cut = 0, digits = 3, errors = TRUE)
 
 #As expected beforehand, the different temperature variables load heavily on the same factor. Therefore 
-#it is sensible to reduce them to one variable representing the temperature, i.e. average temperature
-#sunhours are left as an individual column.
+#it is sensible to reduce them to one variable representing the temperature, i.e. average temperature.
+#Sunhours are left as an individual column.
 
 
 ## use average temperature as single temperature variable (deleting other temperature columns)
 tourism[, c(5:6, 8, 10)] = NULL
+
 
