@@ -1,6 +1,6 @@
 # Name of Quantlet: SPL_WeatherTourism_01preparation
 # Published in:     'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
-# Description:      'Loading Packages, Import and first preparation of data, Description of Weather Variables'
+# Description:      'Loading packages, Import and first preparation of data, Description of weather variables'
 # Keywords:         packages, import, csv, date format, matching data sources
 # Author:           Tim Peschenz
 # Submitted:        So, Mar 17 2019
@@ -38,7 +38,7 @@ weather_all = data.frame(read.csv("weather_data.csv", header = TRUE, sep = ";", 
 weather_all$date_beg = as.Date(sapply(weather_all$MESS_DATUM_BEGINN, toString), format = "%Y%m%d")
 weather_all$date_end = as.Date(sapply(weather_all$MESS_DATUM_ENDE, toString), format = "%Y%m%d")
 
-#replace former date variables
+#delete former date variables
 weather_all$MESS_DATUM_BEGINN = NULL
 weather_all$MESS_DATUM_ENDE   = NULL
 
@@ -47,11 +47,11 @@ weather           = subset(weather_all, as.numeric(format(date_beg, format="%Y")
 rownames(weather) = seq(1:nrow(weather))
 
 #Observations for tourism start in January 2010 until December 2017 (96 observations) and the
-#weather data has to adapted to this time frame.
+#weather data has to be adapted to this time frame.
 
 
 ### import daily weather data ###
-#read daily weather data and transform into data frame
+#read daily weather data and transform it into a data frame
 weather_all_daily = data.frame(read.csv("weather_data_daily.csv", header = TRUE, sep = ";", na.strings = "-999"))
 
 #converting date into R Date format and replace former format

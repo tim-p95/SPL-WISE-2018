@@ -1,6 +1,6 @@
 # Name of Quantlet:  SPL_WeatherTourism_04regression
 # Published in:      'Statistical programming languages - Student Project on ''Impact of Meteorological Factors on Regional Tourism'' '
-# Description:       'Several Multiple Regression Models to measure the impact of weather factors on tourism'
+# Description:       'Several multiple regression models to measure the impact of weather factors on tourism'
 # Keywords:          regression model, multiple regression, autocorrelation, multicollinearity, heteroskedasticity
 # Author:            Tim Peschenz
 # Submitted:         So, Mar 17 2019
@@ -67,7 +67,7 @@ bptest(lm_avg_nights)
 bptest(lm_guest_dev)
 bptest(lm_night_dev)
 
-#Since the p-values for the Breusch-Pagan tests are ot close to 0.05, we cannot reject the Null-
+#Since the p-values for the Breusch-Pagan tests are not close to 0.05, we cannot reject the Null-
 #Hypothesis that there is no heteroskedasticity.
 
 
@@ -108,7 +108,7 @@ dwtest(rel_night_dev_basis ~ .-rel_guest_dev_basis-avg_time, data = lr_data)
 #deviation for guests and nights). The Null-Hypothesis cannot be rejected in these cases.Therefore,
 #there is probably no autocorrelation in these models. The Durbin-Watson test for the model with 
 #the average number of nights per guest has a much lower p-Value (< 0.0005), meaning that we definitely
-#can reject the Null-Hypothesis of no autocorrelation.
+#have to reject the Null-Hypothesis of no autocorrelation.
 
 
 ### check for multicollineraity ###
