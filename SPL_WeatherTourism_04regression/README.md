@@ -1,6 +1,6 @@
 ![banner](../images/banner.png)
 
-# SPL_WeatherTourism_03tourismAnalysis ![qloqo](../images/qloqo.png) 
+# SPL_WeatherTourism_04regression ![qloqo](../images/qloqo.png) 
 
 ```
 Name of Quantlet:  SPL_WeatherTourism_04regression
